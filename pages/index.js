@@ -291,7 +291,34 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="grid md:grid-cols-3 gap-12 items-center">
+              {/* Profile Photo */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+                className="flex justify-center md:justify-start"
+              >
+                <div className="relative">
+                  <div className="w-64 h-64 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 p-1">
+                    <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden">
+                      <Image
+                        src="/profile-photo.jpg" // You'll need to add your photo with this name to the public folder
+                        alt="M.A.Raheem Siddiqui"
+                        width={256}
+                        height={256}
+                        className="w-full h-full object-cover rounded-full"
+                        priority
+                      />
+                    </div>
+                  </div>
+                  {/* Decorative elements */}
+                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-purple-400 rounded-full opacity-60 animate-pulse"></div>
+                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-pink-400 rounded-full opacity-60 animate-pulse delay-1000"></div>
+                </div>
+              </motion.div>
+
+              {/* Skills & Technologies */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -314,6 +341,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
+              {/* What I Do */}
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
