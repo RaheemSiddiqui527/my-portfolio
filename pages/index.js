@@ -21,7 +21,7 @@ export default function Home() {
       setScrollY(window.scrollY)
       
       // Update active section based on scroll position
-      const sections = ['home', 'about', 'projects', 'experience', 'contact']
+      const sections = ['home', 'about', 'education', 'projects', 'experience', 'contact']
       const scrollPosition = window.scrollY + 100
 
       for (const section of sections) {
@@ -82,25 +82,25 @@ export default function Home() {
       title: 'Real-time Chat App',
       description: 'A full-featured real-time chat app built using Next.js, Socket.io, and Node.js, designed for seamless and secure communication.',
       tech: ['Next.js', 'Socket.io', 'MongoDB', 'Tailwind CSS'],
-      image: '/api/placeholder/400/250',
+      image: '',
       github: 'https://github.com/RaheemSiddiqui527/real-chat-app',
       live: 'https://my-real-chat.vercel.app/'
     },
     {
-      title: 'Task Management App',
-      description: 'Collaborative task management with real-time updates and team features.',
-      tech: ['React', 'Firebase', 'Material-UI', 'Socket.io'],
-      image: '/api/placeholder/400/250',
-      github: 'https://github.com/yourusername/taskapp',
-      live: 'https://yourtaskapp.com'
+      title: 'Restaurant Ordering System',
+      description: 'A modern web-based restaurant ordering platform that allows customers to browse menus, place orders, and track their status in real-time. The system supports collaborative kitchen and service staff coordination through live updates, enhancing efficiency and customer experience. Built with a sleek UI and seamless real-time communication features.',
+      tech: ['HTML',  'CSS', 'JS'],
+      image: '',
+      github: 'https://github.com/RaheemSiddiqui527/restaurant-website-1',
+      live: 'https://my-restaurant-website-1.vercel.app/'
     },
     {
-      title: 'AI Content Generator',
-      description: 'AI-powered content creation tool with multiple templates and export options.',
-      tech: ['Python', 'OpenAI API', 'Flask', 'React'],
-      image: '/api/placeholder/400/250',
-      github: 'https://github.com/yourusername/ai-content',
-      live: 'https://youraiapp.com'
+      title: 'Quiz App',
+      description: 'A full-stack quiz application built with the MERN stack, designed to deliver dynamic quizzes with customizable categories, difficulty levels, and instant scoring. Users can take quizzes, view results in real-time, and track their performance. The backend handles user data and quiz logic, while the frontend offers an intuitive and responsive interface.',
+      tech: ['MongoDB ', 'Express.js', 'React', 'Node.js'],
+      image: '',
+      github: 'https://github.com/RaheemSiddiqui527/quizz-aap',
+      live: 'https://raheem-quizz-app.vercel.app/'
     }
   ]
 
@@ -112,6 +112,37 @@ export default function Home() {
       description: 'Contributing to the development of enterprise-level web applications with a focus on frontend using React. Collaborating with cross-functional teams, implementing modern UI practices, and actively learning and applying best coding standards in real-world projects.'
     }
   ]
+
+  const education = [
+  {
+    degree: 'Diploma in Artificial Intelligence & Machine Learning',
+    institution: "Anjuman-I-Islam's Abdul Razzak Kalsekar Polytechnic, Panvel (MSBTE)",
+    duration: '2021 - 2025',
+    description:
+      'Focused on core areas of AI and ML including machine learning algorithms, deep learning, neural networks, and data science. Gained hands-on experience with Python, TensorFlow, and real-world AI/ML projects.',
+    achievements: [
+      'Machine Learning & Deep Learning',
+      'Python Programming & TensorFlow',
+      'Data Analytics & Visualization',
+      'AI-Based Project Development',
+    ],
+  },
+  {
+    degree: 'Secondary School Certificate (SSC)',
+    institution: 'Local High School',
+    duration: '2020 - 2021',
+    description:
+      'Completed SSC with a focus on mathematics and science, laying a solid foundation for a future in technology and engineering.',
+    achievements: [
+      'Strong Foundation in Math & Science',
+      'Basic Computer Literacy',
+      'Problem-Solving & Logical Thinking',
+      'Academic Achievement',
+    ],
+  },
+];
+
+
 
   return (
     <>
@@ -138,7 +169,7 @@ export default function Home() {
               
               {/* Desktop Navigation */}
               <div className="hidden md:flex space-x-8">
-                {['Home', 'About', 'Projects', 'Experience', 'Contact'].map((item) => (
+                {['Home', 'About', 'Education', 'Projects', 'Experience', 'Contact'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item.toLowerCase())}
@@ -178,7 +209,7 @@ export default function Home() {
                 className="md:hidden mt-4 pb-4"
               >
                 <div className="flex flex-col space-y-4">
-                  {['Home', 'About', 'Projects', 'Experience', 'Contact'].map((item) => (
+                  {['Home', 'About', 'Education', 'Projects', 'Experience', 'Contact'].map((item) => (
                     <button
                       key={item}
                       onClick={() => scrollToSection(item.toLowerCase())}
@@ -315,8 +346,56 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Education Section */}
+        <section id="education" className="py-20">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Education
+              </h2>
+              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                My educational journey and continuous learning path in technology and development
+              </p>
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto">
+              {education.map((edu, index) => (
+                <motion.div
+                  key={edu.degree}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  className="mb-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-purple-400/30 transition-all duration-300"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                    <h3 className="text-xl font-bold text-purple-300">{edu.degree}</h3>
+                    <span className="text-pink-300 font-semibold">{edu.duration}</span>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-200 mb-3">{edu.institution}</h4>
+                  <p className="text-gray-300 mb-4">{edu.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {edu.achievements.map((achievement, achievementIndex) => (
+                      <span
+                        key={achievementIndex}
+                        className="px-3 py-1 bg-purple-500/20 text-purple-200 rounded-full text-sm"
+                      >
+                        {achievement}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Projects Section */}
-        <section id="projects" className="py-20">
+        <section id="projects" className="py-20 bg-black/20">
           <div className="container mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
