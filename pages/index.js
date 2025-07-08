@@ -79,12 +79,12 @@ export default function Home() {
 
   const projects = [
     {
-      title: 'E-Commerce Platform',
-      description: 'Full-stack e-commerce solution with payment integration and admin dashboard.',
-      tech: ['Next.js', 'Stripe', 'MongoDB', 'Tailwind CSS'],
+      title: 'Real-time Chat App',
+      description: 'A full-featured real-time chat app built using Next.js, Socket.io, and Node.js, designed for seamless and secure communication.',
+      tech: ['Next.js', 'Socket.io', 'MongoDB', 'Tailwind CSS'],
       image: '/api/placeholder/400/250',
-      github: 'https://github.com/yourusername/ecommerce',
-      live: 'https://yourproject.com'
+      github: 'https://github.com/RaheemSiddiqui527/real-chat-app',
+      live: 'https://my-real-chat.vercel.app/'
     },
     {
       title: 'Task Management App',
