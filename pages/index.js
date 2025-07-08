@@ -150,7 +150,7 @@ export default function Home() {
         <title>M.A.Raheem Siddiqui - Full Stack Developer</title>
         <meta name="description" content="Professional portfolio of a full stack developer specializing in React, Next.js, and modern web technologies." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/profile-photo.jpg" />
       </Head>
 
       <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
