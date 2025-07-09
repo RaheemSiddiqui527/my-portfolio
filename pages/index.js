@@ -82,7 +82,7 @@ export default function Home() {
       title: 'Real-time Chat App',
       description: 'A full-featured real-time chat app built using Next.js, Socket.io, and Node.js, designed for seamless and secure communication.',
       tech: ['Next.js', 'Socket.io', 'MongoDB', 'Tailwind CSS'],
-      image: '',
+      image: '/chat-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/real-chat-app',
       live: 'https://my-real-chat.vercel.app/'
     },
@@ -90,7 +90,7 @@ export default function Home() {
       title: 'Restaurant Ordering System',
       description: 'A modern web-based restaurant ordering platform that allows customers to browse menus, place orders, and track their status in real-time. The system supports collaborative kitchen and service staff coordination through live updates, enhancing efficiency and customer experience. Built with a sleek UI and seamless real-time communication features.',
       tech: ['HTML',  'CSS', 'JS'],
-      image: '',
+      image: '/restaurant-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/restaurant-website-1',
       live: 'https://my-restaurant-website-1.vercel.app/'
     },
@@ -98,9 +98,17 @@ export default function Home() {
       title: 'Quiz App',
       description: 'A full-stack quiz application built with the MERN stack, designed to deliver dynamic quizzes with customizable categories, difficulty levels, and instant scoring. Users can take quizzes, view results in real-time, and track their performance. The backend handles user data and quiz logic, while the frontend offers an intuitive and responsive interface.',
       tech: ['MongoDB ', 'Express.js', 'React', 'Node.js'],
-      image: '',
+      image: '/quiz-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/quizz-aap',
       live: 'https://raheem-quizz-app.vercel.app/'
+    },
+    {
+      title: 'Task Management App',
+      description: 'A full-stack task management application designed to help users efficiently organize, track, and manage their daily tasks and projects. The app offers a clean and responsive UI, with features that enhance productivity and collaboration.',
+      tech: ['MongoDB ', 'Express.js', 'React', 'Node.js'],
+      image: '/task-app.svg',
+      github: 'https://github.com/RaheemSiddiqui527/Task-Mangement-App',
+      live: 'https://raheem-task-mangement.vercel.app/'
     }
   ]
 
@@ -448,8 +456,19 @@ export default function Home() {
                   transition={{ duration: 0.8, delay: index * 0.2 }}
                   className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
                 >
-                  <div className="h-48 bg-gradient-to-br from-purple-600/20 to-pink-600/20 flex items-center justify-center">
-                    <div className="text-6xl opacity-50">🚀</div>
+                  <div className="h-48 bg-gradient-to-br from-purple-600/20 to-pink-600/20 relative overflow-hidden">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <div className="text-6xl opacity-50">🚀</div>
+                      </div>
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-3 text-purple-300">{project.title}</h3>

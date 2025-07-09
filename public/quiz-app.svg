@@ -1,0 +1,30 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="400" height="300" fill="url(#grad1)"/>
+<defs>
+<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+</linearGradient>
+</defs>
+<rect x="20" y="20" width="360" height="260" rx="15" fill="white" fill-opacity="0.95"/>
+<rect x="20" y="20" width="360" height="60" rx="15" fill="url(#grad2)"/>
+<defs>
+<linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+</linearGradient>
+</defs>
+<text x="200" y="55" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">🧠 MERN Quiz App</text>
+<rect x="40" y="90" width="320" height="8" rx="4" fill="#e9ecef"/>
+<rect x="40" y="90" width="192" height="8" rx="4" fill="url(#grad2)"/>
+<text x="40" y="115" fill="#333" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Question 3 of 5</text>
+<text x="360" y="115" fill="#28a745" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="end">Score: 180 pts</text>
+<text x="200" y="140" fill="#333" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Which React hook manages state?</text>
+<rect x="40" y="160" width="320" height="30" rx="15" fill="#f8f9fa" stroke="#ddd" stroke-width="1"/>
+<text x="50" y="180" fill="#333" font-family="Arial, sans-serif" font-size="14">A) useEffect</text>
+<rect x="40" y="200" width="320" height="30" rx="15" fill="#667eea" stroke="#667eea" stroke-width="2"/>
+<text x="50" y="220" fill="white" font-family="Arial, sans-serif" font-size="14" font-weight="bold">B) useState ✓</text>
+<rect x="40" y="240" width="320" height="30" rx="15" fill="#f8f9fa" stroke="#ddd" stroke-width="1"/>
+<text x="50" y="260" fill="#333" font-family="Arial, sans-serif" font-size="14">C) useContext</text>
+<text x="200" y="290" fill="#999" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">MongoDB + Express + React + Node.js</text>
+</svg>

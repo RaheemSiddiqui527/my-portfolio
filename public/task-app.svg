@@ -1,0 +1,40 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="400" height="300" fill="url(#grad1)"/>
+<defs>
+<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#74b9ff;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#0984e3;stop-opacity:1" />
+</linearGradient>
+</defs>
+<rect x="20" y="20" width="360" height="260" rx="15" fill="white" fill-opacity="0.95"/>
+<rect x="20" y="20" width="360" height="60" rx="15" fill="url(#grad2)"/>
+<defs>
+<linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" style="stop-color:#74b9ff;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#0984e3;stop-opacity:1" />
+</linearGradient>
+</defs>
+<text x="200" y="55" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">📋 Task Management</text>
+<rect x="40" y="90" width="100" height="180" rx="10" fill="#f8f9fa"/>
+<text x="90" y="110" fill="#333" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">📝 To Do</text>
+<rect x="50" y="120" width="80" height="40" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
+<text x="90" y="135" fill="#333" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">Design UI</text>
+<text x="90" y="150" fill="#dc3545" font-family="Arial, sans-serif" font-size="8" text-anchor="middle">High Priority</text>
+<rect x="50" y="170" width="80" height="40" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
+<text x="90" y="185" fill="#333" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">API Setup</text>
+<text x="90" y="200" fill="#ffa500" font-family="Arial, sans-serif" font-size="8" text-anchor="middle">Medium</text>
+<rect x="150" y="90" width="100" height="180" rx="10" fill="#fff3cd"/>
+<text x="200" y="110" fill="#333" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">⚡ In Progress</text>
+<rect x="160" y="120" width="80" height="40" rx="8" fill="white" stroke="#ffa500" stroke-width="2"/>
+<text x="200" y="135" fill="#333" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">React Components</text>
+<text x="200" y="150" fill="#dc3545" font-family="Arial, sans-serif" font-size="8" text-anchor="middle">High Priority</text>
+<rect x="260" y="90" width="100" height="180" rx="10" fill="#d4edda"/>
+<text x="310" y="110" fill="#333" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">✅ Done</text>
+<rect x="270" y="120" width="80" height="40" rx="8" fill="white" stroke="#28a745" stroke-width="2"/>
+<text x="310" y="135" fill="#333" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">Authentication</text>
+<text x="310" y="150" fill="#28a745" font-family="Arial, sans-serif" font-size="8" text-anchor="middle">Completed</text>
+<rect x="270" y="170" width="80" height="40" rx="8" fill="white" stroke="#28a745" stroke-width="2"/>
+<text x="310" y="185" fill="#333" font-family="Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">Database</text>
+<text x="310" y="200" fill="#28a745" font-family="Arial, sans-serif" font-size="8" text-anchor="middle">Completed</text>
+<text x="200" y="290" fill="#999" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">MERN Stack + Real-time Collaboration</text>
+</svg>
