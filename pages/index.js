@@ -325,7 +325,7 @@ export default function Home() {
                   <div className="w-64 h-64 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 p-1">
                     <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden">
                       <Image
-                        src="/profile-photo.jpg"
+                        src="/profile-photo.svg"
                         alt="M.A.Raheem Siddiqui - Full Stack Developer"
                         width={256}
                         height={256}
