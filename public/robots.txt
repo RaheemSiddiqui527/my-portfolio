@@ -1,0 +1,11 @@
+# Allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Block crawling of system or unused folders (if they exist)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /tmp/
+
+# Sitemap location
+Sitemap: https://my-portfolio-raheem.vercel.app/sitemap.xml
