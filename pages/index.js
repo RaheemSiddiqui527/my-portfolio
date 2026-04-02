@@ -1,35 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home')
-  const [scrollY, setScrollY] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  })
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
-      
-      // Update active section based on scroll position
+      setScrolled(window.scrollY > 20)
       const sections = ['home', 'about', 'education', 'projects', 'experience', 'contact']
-      const scrollPosition = window.scrollY + 100
-
+      const scrollPosition = window.scrollY + 120
       for (const section of sections) {
         const element = document.getElementById(section)
         if (element) {
-          const offsetTop = element.offsetTop
-          const offsetHeight = element.offsetHeight
-          
+          const { offsetTop, offsetHeight } = element
           if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(section)
             break
@@ -37,730 +26,523 @@ export default function Home() {
         }
       }
     }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
+  const scrollToSection = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     setIsMenuOpen(false)
   }
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
+
+    const { name, email, subject, message } = formData
+    const whatsappNumber = '9321926162' // 🔴 Replace with your WhatsApp number (91 = India code, no + sign)
+    const text = `👋 *New Portfolio Contact*\n\n*Name:* ${name}\n*Email:* ${email}\n*Subject:* ${subject}\n\n*Message:*\n${message}`
+    const encodedText = encodeURIComponent(text)
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedText}`
+
     setTimeout(() => {
-      setSubmitMessage('Thank you for your message! I\'ll get back to you soon.')
+      setSubmitMessage("Opening WhatsApp... I'll get back to you soon! ✅")
       setFormData({ name: '', email: '', subject: '', message: '' })
       setIsSubmitting(false)
-      
-      // Clear message after 5 seconds
-      setTimeout(() => setSubmitMessage(''), 5000)
-    }, 1000)
+      window.open(whatsappURL, '_blank')
+      setTimeout(() => setSubmitMessage(''), 6000)
+    }, 800)
   }
 
-  const skills = [
-    'JavaScript', 'React', 'Next.js', 'Node.js', 'Python', 'TypeScript',
-    'MongoDB',  'AWS', 'Docker', 'Git', 'Figma'
-  ]
+  const skills = ['JavaScript', 'React', 'Next.js', 'Node.js', 'Python', 'TypeScript', 'MongoDB', 'AWS', 'Docker', 'Git', 'Figma']
 
   const projects = [
     {
       title: 'Real-time Chat App',
-      description: 'A full-featured real-time chat app built using Next.js, Socket.io, and Node.js, designed for seamless and secure communication.',
+      description: 'Full-featured real-time chat app built using Next.js, Socket.io, and Node.js for seamless, secure communication.',
       tech: ['Next.js', 'Socket.io', 'MongoDB', 'Tailwind CSS'],
-      image: '/chat-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/real-chat-app',
       live: 'https://my-real-chat.vercel.app/'
     },
     {
       title: 'Restaurant Ordering System',
-      description: 'A modern web-based restaurant ordering platform that allows customers to browse menus, place orders, and track their status in real-time. The system supports collaborative kitchen and service staff coordination through live updates, enhancing efficiency and customer experience. Built with a sleek UI and seamless real-time communication features.',
-      tech: ['HTML',  'CSS', 'JS'],
-      image: '/restaurant-app.svg',
+      description: 'Modern web-based restaurant platform — browse menus, place orders, track status in real-time with live kitchen coordination.',
+      tech: ['HTML', 'CSS', 'JavaScript'],
       github: 'https://github.com/RaheemSiddiqui527/restaurant-website-1',
       live: 'https://my-restaurant-website-1.vercel.app/'
     },
     {
       title: 'Quiz App',
-      description: 'A full-stack quiz application built with the MERN stack, designed to deliver dynamic quizzes with customizable categories, difficulty levels, and instant scoring. Users can take quizzes, view results in real-time, and track their performance. The backend handles user data and quiz logic, while the frontend offers an intuitive and responsive interface.',
-      tech: ['MongoDB ', 'Express.js', 'React', 'Node.js'],
-      image: '/quiz-app.svg',
+      description: 'Full-stack MERN quiz application with custom categories, difficulty levels, instant scoring, and performance tracking.',
+      tech: ['MongoDB', 'Express.js', 'React', 'Node.js'],
       github: 'https://github.com/RaheemSiddiqui527/quizz-aap',
       live: 'https://raheem-quizz-app.vercel.app/'
     },
     {
       title: 'Task Management App',
-      description: 'A full-stack task management application designed to help users efficiently organize, track, and manage their daily tasks and projects. The app offers a clean and responsive UI, with features that enhance productivity and collaboration.',
-      tech: ['MongoDB ', 'Express.js', 'React', 'Node.js'],
-      image: '/task-app.svg',
+      description: 'Full-stack task management app to efficiently organize, track, and manage daily tasks and projects.',
+      tech: ['MongoDB', 'Express.js', 'React', 'Node.js'],
       github: 'https://github.com/RaheemSiddiqui527/Task-Mangement-App',
       live: 'https://raheem-task-mangement.vercel.app/'
     },
     {
       title: 'Notepad',
-      description: 'A full-stack note-taking application built with the MERN stack, designed to help users create, edit, and manage personal notes with ease. The app features a minimalist and responsive UI, real-time updates, and persistent storage, making it ideal for everyday use.',
+      description: 'MERN note-taking app with minimalist UI, real-time updates, and persistent storage for everyday personal use.',
       tech: ['MongoDB', 'Express.js', 'React', 'Node.js'],
-      image: '/Notepad-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/Notepad-App',
       live: 'https://raheem-Notepad.vercel.app/'
     },
     {
       title: 'Tailwind Dashboard',
-      description: 'A full-stack task management dashboard built with the MERN stack and styled using Tailwind CSS. This application allows users to create, update, delete, and manage tasks with a modern and intuitive user interface. Features include user authentication, task filtering by status, responsive design, and real-time updates for a seamless experience.',
+      description: 'Full-stack MERN task dashboard with user authentication, task filtering, responsive design, and real-time updates.',
       tech: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Tailwind CSS'],
-      image: '/dashboard-app.svg',
       github: 'https://github.com/RaheemSiddiqui527/tailwind-dashboard',
       live: 'https://raheem-tailwind-dashboard.vercel.app/'
     }
   ]
 
-  const experience = [
-    {
-      role: 'Junior Software Developer',
-      company: 'Nexcore Alliance.',
-      duration: '2025 - Present',
-      description: 'Contributing to the development of enterprise-level web applications with a focus on frontend using React. Collaborating with cross-functional teams, implementing modern UI practices, and actively learning and applying best coding standards in real-world projects.'
-    }
-  ]
-
-  const education = [
-    {
-      degree: 'Diploma in Artificial Intelligence & Machine Learning',
-      institution: "Anjuman-I-Islam's Abdul Razzak Kalsekar Polytechnic, Panvel (MSBTE)",
-      duration: '2021 - 2025',
-      description:
-        'Focused on core areas of AI and ML including machine learning algorithms, deep learning, neural networks, and data science. Gained hands-on experience with Python, TensorFlow, and real-world AI/ML projects.',
-      achievements: [
-        'Machine Learning & Deep Learning',
-        'Python Programming & TensorFlow',
-        'Data Analytics & Visualization',
-        'AI-Based Project Development',
-      ],
-    },
-    {
-      degree: 'Secondary School Certificate (SSC)',
-      institution: 'Local High School',
-      duration: '2020 - 2021',
-      description:
-        'Completed SSC with a focus on mathematics and science, laying a solid foundation for a future in technology and engineering.',
-      achievements: [
-        'Strong Foundation in Math & Science',
-        'Basic Computer Literacy',
-        'Problem-Solving & Logical Thinking',
-        'Academic Achievement',
-      ],
-    },
-  ]
+  const navItems = ['Home', 'About', 'Education', 'Projects', 'Experience', 'Contact']
 
   return (
     <>
       <Head>
-        <title>M.A.Raheem Siddiqui - Full Stack Developer</title>
-        <meta name="description" content="Professional portfolio of a full stack developer specializing in React, Next.js, and modern web technologies." />
+        <title>M.A. Raheem Siddiqui — Full Stack Developer</title>
+        <meta name="description" content="Full Stack Developer specializing in React, Next.js, and modern web technologies." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/profile-placeholder.svg" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
       </Head>
 
-      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
-        {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-black/20 backdrop-blur-md z-50 border-b border-white/10">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex justify-between items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent cursor-pointer"
-                onClick={() => scrollToSection('home')}
-              >
-                M.A.Raheem Siddiqui
-              </motion.div>
-              
-              {/* Desktop Navigation */}
-              <div className="hidden md:flex space-x-8">
-                {['Home', 'About', 'Education', 'Projects', 'Experience', 'Contact'].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item.toLowerCase())}
-                    className={`hover:text-purple-300 transition-colors duration-200 relative group ${
-                      activeSection === item.toLowerCase() ? 'text-purple-300' : 'text-white'
-                    }`}
-                  >
-                    {item}
-                    <span className={`absolute -bottom-1 left-0 h-0.5 bg-purple-400 transition-all duration-200 ${
-                      activeSection === item.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
-                    }`}></span>
-                  </button>
+      <style>{`
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+          --navy: #0f2557;
+          --navy-mid: #1a3a7a;
+          --navy-light: #2b5299;
+          --accent: #1d4ed8;
+          --accent-hover: #1e40af;
+          --white: #ffffff;
+          --off-white: #f8f9fc;
+          --gray-50: #f1f5f9;
+          --gray-100: #e2e8f0;
+          --gray-300: #94a3b8;
+          --gray-500: #64748b;
+          --gray-700: #334155;
+          --text: #0f172a;
+          --font-display: 'DM Serif Display', Georgia, serif;
+          --font-body: 'DM Sans', system-ui, sans-serif;
+          --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+          --shadow-sm: 0 1px 3px rgba(15,37,87,0.08), 0 1px 2px rgba(15,37,87,0.04);
+          --shadow-md: 0 4px 16px rgba(15,37,87,0.10), 0 2px 4px rgba(15,37,87,0.05);
+          --shadow-lg: 0 10px 40px rgba(15,37,87,0.13);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--white); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+        /* NAV */
+        .nav {
+          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+          background: rgba(255,255,255,0.95);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid transparent;
+          transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .nav.scrolled { border-bottom-color: var(--gray-100); box-shadow: var(--shadow-sm); }
+        .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-family: var(--font-display); font-size: 1.15rem; color: var(--navy); cursor: pointer; letter-spacing: -0.01em; }
+        .nav-links { display: flex; gap: 0.25rem; }
+        .nav-link {
+          font-size: 0.875rem; font-weight: 500; padding: 0.4rem 0.75rem; border-radius: 6px;
+          color: var(--gray-500); background: none; border: none; cursor: pointer;
+          transition: color var(--transition), background var(--transition);
+        }
+        .nav-link:hover { color: var(--navy); background: var(--gray-50); }
+        .nav-link.active { color: var(--accent); background: rgba(29,78,216,0.07); }
+        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .hamburger-line { display: block; width: 22px; height: 1.5px; background: var(--navy); margin: 5px 0; transition: var(--transition); border-radius: 2px; }
+        .mobile-menu { display: none; background: var(--white); border-top: 1px solid var(--gray-100); padding: 1rem 2rem; }
+        .mobile-link { display: block; padding: 0.6rem 0; font-size: 0.9rem; font-weight: 500; color: var(--gray-700); cursor: pointer; border-bottom: 1px solid var(--gray-100); text-align: left; background: none; border-left: none; border-right: none; width: 100%; }
+        .mobile-link:last-child { border-bottom: none; }
+        .mobile-link.active { color: var(--accent); }
+
+        /* SECTIONS */
+        section { padding: 6rem 0; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+        .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+        .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.75rem); color: var(--navy); line-height: 1.2; margin-bottom: 1.5rem; }
+        .section-subtitle { font-size: 1.05rem; color: var(--gray-500); max-width: 540px; line-height: 1.75; }
+
+        /* HERO */
+        #home { padding: 0; min-height: 100vh; display: flex; align-items: center; background: var(--white); position: relative; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 60%); }
+        .hero-dot-grid {
+          position: absolute; inset: 0; opacity: 0.35;
+          background-image: radial-gradient(circle, #1d4ed8 1px, transparent 1px);
+          background-size: 32px 32px;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 0 2rem; padding-top: 68px; }
+        .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.15); border-radius: 100px; padding: 0.35rem 1rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; margin-bottom: 2rem; }
+        .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero-name { font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 1.05; color: var(--navy); margin-bottom: 0.5rem; }
+        .hero-name em { font-style: italic; color: var(--accent); }
+        .hero-role { font-size: clamp(1rem, 2.5vw, 1.3rem); color: var(--gray-500); font-weight: 400; margin-bottom: 1.5rem; }
+        .hero-desc { font-size: 1.05rem; color: var(--gray-500); max-width: 520px; line-height: 1.8; margin-bottom: 2.5rem; }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--navy); color: var(--white); padding: 0.75rem 1.75rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; border: none; transition: background var(--transition), transform var(--transition); text-decoration: none; }
+        .btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); }
+        .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: var(--navy); border: 1.5px solid var(--navy); padding: 0.75rem 1.75rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all var(--transition); text-decoration: none; }
+        .btn-outline:hover { background: var(--navy); color: var(--white); }
+        .hero-stat-row { display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--gray-100); flex-wrap: wrap; }
+        .hero-stat { }
+        .hero-stat-num { font-family: var(--font-display); font-size: 2rem; color: var(--navy); line-height: 1; }
+        .hero-stat-label { font-size: 0.8rem; color: var(--gray-400); margin-top: 0.25rem; }
+
+        /* ABOUT */
+        #about { background: var(--off-white); }
+        .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+        .about-photo-wrap { position: relative; }
+        .about-photo-inner { width: 260px; height: 300px; border-radius: 16px; overflow: hidden; background: var(--gray-100); border: 1px solid var(--gray-100); box-shadow: var(--shadow-md); position: relative; }
+        .about-photo-badge { position: absolute; bottom: -1rem; right: -1rem; background: var(--navy); color: var(--white); border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 600; box-shadow: var(--shadow-md); }
+        .about-photo-badge span { font-family: var(--font-display); font-size: 1.3rem; display: block; }
+        .about-text .section-subtitle { max-width: 100%; margin-bottom: 2.5rem; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+        .skill-tag { font-size: 0.8rem; font-weight: 500; padding: 0.35rem 0.85rem; border-radius: 6px; background: var(--white); border: 1px solid var(--gray-100); color: var(--gray-700); transition: all var(--transition); }
+        .skill-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(29,78,216,0.04); }
+        .social-row { display: flex; gap: 0.75rem; margin-top: 2rem; flex-wrap: wrap; }
+        .social-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 500; color: var(--gray-500); padding: 0.4rem 0.9rem; border: 1px solid var(--gray-100); border-radius: 6px; text-decoration: none; transition: all var(--transition); background: var(--white); }
+        .social-link:hover { color: var(--accent); border-color: var(--accent); background: rgba(29,78,216,0.04); }
+        .social-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        /* CARDS: shared */
+        .card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 14px; padding: 1.75rem; transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition); }
+        .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--gray-200); }
+
+        /* EDUCATION */
+        #education { background: var(--white); }
+        .edu-list { display: flex; flex-direction: column; gap: 1.5rem; max-width: 780px; }
+        .edu-card { display: flex; gap: 1.5rem; }
+        .edu-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(29,78,216,0.08); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(29,78,216,0.12); }
+        .edu-icon svg { width: 20px; height: 20px; color: var(--accent); }
+        .edu-body { }
+        .edu-duration { font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem; }
+        .edu-degree { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 0.25rem; }
+        .edu-inst { font-size: 0.88rem; color: var(--gray-500); margin-bottom: 0.75rem; }
+        .edu-desc { font-size: 0.88rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 1rem; }
+        .edu-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .edu-tag { font-size: 0.75rem; padding: 0.25rem 0.7rem; border-radius: 5px; background: var(--gray-50); color: var(--gray-700); border: 1px solid var(--gray-100); }
+        .divider { height: 1px; background: var(--gray-100); margin: 2rem 0; }
+
+        /* PROJECTS */
+        #projects { background: var(--off-white); }
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .project-card { display: flex; flex-direction: column; }
+        .project-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--gray-300); text-transform: uppercase; margin-bottom: 1rem; }
+        .project-title { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 0.6rem; }
+        .project-desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.65; flex: 1; margin-bottom: 1.25rem; }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem; }
+        .tech-pill { font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(15,37,87,0.06); color: var(--navy-light); }
+        .project-links { display: flex; gap: 1rem; margin-top: auto; }
+        .project-link { font-size: 0.8rem; font-weight: 500; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 0.3rem; transition: color var(--transition); }
+        .project-link:hover { color: var(--navy); }
+        .project-link::after { content: '↗'; font-size: 0.75rem; }
+
+        /* EXPERIENCE */
+        #experience { background: var(--white); }
+        .exp-card { max-width: 780px; }
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+        .exp-role { font-size: 1.1rem; font-weight: 600; color: var(--navy); }
+        .exp-duration { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; color: var(--accent); text-transform: uppercase; background: rgba(29,78,216,0.07); padding: 0.25rem 0.7rem; border-radius: 5px; }
+        .exp-company { font-size: 0.9rem; color: var(--gray-500); margin-bottom: 0.85rem; }
+        .exp-desc { font-size: 0.9rem; color: var(--gray-500); line-height: 1.7; }
+
+        /* CONTACT */
+        #contact { background: var(--off-white); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+        .contact-info .section-subtitle { margin-bottom: 2.5rem; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+        .contact-icon { width: 42px; height: 42px; background: var(--white); border: 1px solid var(--gray-100); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .contact-icon svg { width: 16px; height: 16px; color: var(--accent); }
+        .contact-item-label { font-size: 0.75rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; }
+        .contact-item-val { font-size: 0.88rem; color: var(--gray-700); }
+        .form-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: 16px; padding: 2.25rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--gray-700); margin-bottom: 0.45rem; letter-spacing: 0.02em; }
+        input, textarea {
+          width: 100%; padding: 0.65rem 0.9rem; border-radius: 8px; border: 1px solid var(--gray-100);
+          font-family: var(--font-body); font-size: 0.88rem; color: var(--text); background: var(--off-white);
+          transition: border-color var(--transition), box-shadow var(--transition); outline: none;
+        }
+        input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(29,78,216,0.1); background: var(--white); }
+        input::placeholder, textarea::placeholder { color: var(--gray-300); }
+        textarea { resize: vertical; min-height: 120px; }
+        .submit-btn { width: 100%; background: var(--navy); color: var(--white); border: none; border-radius: 8px; padding: 0.8rem; font-family: var(--font-body); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background var(--transition); margin-top: 0.5rem; }
+        .submit-btn:hover:not(:disabled) { background: var(--navy-light); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .success-msg { background: rgba(29,78,216,0.07); border: 1px solid rgba(29,78,216,0.15); border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.85rem; color: var(--accent); margin-bottom: 1.25rem; }
+
+        /* FOOTER */
+        footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.82rem; }
+        footer span { color: rgba(255,255,255,0.85); }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .scroll-mouse { width: 22px; height: 34px; border: 1.5px solid rgba(15,37,87,0.3); border-radius: 11px; position: relative; }
+        .scroll-mouse::after { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 3px; height: 6px; background: var(--accent); border-radius: 2px; animation: scrollDown 1.8s infinite; }
+        @keyframes scrollDown { 0% { opacity: 1; top: 5px; } 100% { opacity: 0; top: 16px; } }
+        .scroll-text { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+          .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+          .about-photo-inner { width: 200px; height: 230px; }
+          .about-photo-badge { bottom: -0.75rem; right: -0.75rem; }
+          .projects-grid { grid-template-columns: repeat(2, 1fr); }
+          .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+        }
+        @media (max-width: 640px) {
+          .nav-links { display: none; }
+          .hamburger { display: block; }
+          .mobile-menu.open { display: block; }
+          section { padding: 4rem 0; }
+          .projects-grid { grid-template-columns: 1fr; }
+          .form-row { grid-template-columns: 1fr; }
+          .hero-stat-row { gap: 2rem; }
+          .hero-actions { flex-direction: column; }
+          .btn-primary, .btn-outline { justify-content: center; }
+        }
+      `}</style>
+
+      {/* NAV */}
+      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-inner">
+          <div className="nav-logo" onClick={() => scrollToSection('home')}>M.A. Raheem Siddiqui</div>
+          <div className="nav-links">
+            {navItems.map(item => (
+              <button key={item} className={`nav-link ${activeSection === item.toLowerCase() ? 'active' : ''}`} onClick={() => scrollToSection(item.toLowerCase())}>{item}</button>
+            ))}
+          </div>
+          <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
+            <span className="hamburger-line" style={isMenuOpen ? { transform: 'rotate(45deg) translate(4px, 4px)' } : {}}></span>
+            <span className="hamburger-line" style={isMenuOpen ? { opacity: 0 } : {}}></span>
+            <span className="hamburger-line" style={isMenuOpen ? { transform: 'rotate(-45deg) translate(4px, -4px)' } : {}}></span>
+          </button>
+        </div>
+        <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
+          {navItems.map(item => (
+            <button key={item} className={`mobile-link ${activeSection === item.toLowerCase() ? 'active' : ''}`} onClick={() => scrollToSection(item.toLowerCase())}>{item}</button>
+          ))}
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section id="home">
+        <div className="hero-bg"></div>
+        <div className="hero-dot-grid"></div>
+        <div className="hero-content">
+          <div className="hero-tag mt-5">Available for Work</div>
+          <h1 className="hero-name">M.A. <em>Raheem</em><br />Siddiqui</h1>
+          <p className="hero-role">Full Stack Developer · MERN Stack · AI/ML</p>
+          <p className="hero-desc">Building scalable, intelligent web applications with clean code and a focus on performance, usability, and real-world impact.</p>
+          <div className="hero-actions">
+            <button className="btn-primary" onClick={() => scrollToSection('projects')}>View Projects</button>
+            <button className="btn-outline" onClick={() => scrollToSection('contact')}>Get In Touch</button>
+          </div>
+          <div className="hero-stat-row">
+            <div className="hero-stat">
+              <div className="hero-stat-num">6+</div>
+              <div className="hero-stat-label">Projects Shipped</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">MERN</div>
+              <div className="hero-stat-label">Core Stack</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">AI/ML</div>
+              <div className="hero-stat-label">Diploma Focus</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-num">2025</div>
+              <div className="hero-stat-label">Currently Active</div>
+            </div>
+          </div>
+        </div>
+        {/* <div className="scroll-indicator" onClick={() => scrollToSection('about')}>
+          <div className="scroll-mouse"></div>
+          <span className="scroll-text">Scroll</span>
+        </div> */}
+      </section>
+
+      {/* ABOUT */}
+      <section id="about">
+        <div className="container">
+          <div className="about-grid">
+            <div className="about-photo-wrap">
+              <div className="about-photo-inner">
+                <Image src="/profile.jpg" alt="M.A. Raheem Siddiqui" fill style={{ objectFit: 'cover' }} priority onError={e => { e.target.src = '/profile-placeholder.svg' }} />
+              </div>
+              <div className="about-photo-badge">
+                <span>1+</span>Year Experience
+              </div>
+            </div>
+            <div className="about-text">
+              <p className="section-label">About Me</p>
+              <h2 className="section-title">Passionate developer,<br />problem solver.</h2>
+              <p className="section-subtitle">AI/ML-focused Full Stack Developer with hands-on experience building scalable web applications using the MERN stack. I enjoy turning complex problems into clean, efficient solutions with a focus on performance, usability, and real-world impact.</p>
+              <div className="skills-grid">
+                {skills.map(s => <span key={s} className="skill-tag">{s}</span>)}
+              </div>
+              <div className="social-row">
+                <a href="https://github.com/RaheemSiddiqui527" target="_blank" rel="noopener noreferrer" className="social-link">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.005 2.05.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                  GitHub
+                </a>
+                <a href="https://linkedin.com/in/codewithraheem" target="_blank" rel="noopener noreferrer" className="social-link">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+                  LinkedIn
+                </a>
+                <a href="https://twitter.com/codewithraheem" target="_blank" rel="noopener noreferrer" className="social-link">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.95 4.57a10 10 0 01-2.82.77 4.96 4.96 0 002.16-2.72c-.95.56-2 .96-3.13 1.19a4.92 4.92 0 00-8.38 4.48C7.69 8.1 4.07 6.13 1.64 3.16a4.82 4.82 0 00-.67 2.48c0 1.71.87 3.21 2.19 4.1a4.9 4.9 0 01-2.23-.61v.06a4.92 4.92 0 003.95 4.83 5 5 0 01-2.21.08 4.94 4.94 0 004.6 3.42 9.87 9.87 0 01-6.1 2.1c-.4 0-.79-.02-1.17-.07a13.9 13.9 0 007.56 2.21c9.05 0 14-7.5 14-13.99 0-.21 0-.42-.02-.63A9.94 9.94 0 0024 4.59l-.05-.02z"/></svg>
+                  Twitter
+                </a>
+                <a href="mailto:siddiquiraheem02@gmail.com" className="social-link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Email
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section id="education">
+        <div className="container">
+          <p className="section-label">Background</p>
+          <h2 className="section-title">Education</h2>
+          <div className="edu-list">
+            {[
+              {
+                degree: 'Diploma in Artificial Intelligence & Machine Learning',
+                inst: "Anjuman-I-Islam's ARKP, Panvel (MSBTE)",
+                duration: '2021 – 2025',
+                desc: 'Focused on ML algorithms, deep learning, neural networks, and data science. Hands-on experience with Python, TensorFlow, and real-world AI/ML projects.',
+                tags: ['Machine Learning', 'Deep Learning', 'Python', 'TensorFlow', 'Data Analytics']
+              },
+              {
+                degree: 'Secondary School Certificate (SSC)',
+                inst: 'Local High School',
+                duration: '2020 – 2021',
+                desc: 'Completed SSC with a focus on mathematics and science, building a solid foundation for technology and engineering.',
+                tags: ['Mathematics', 'Science', 'Problem Solving', 'Computer Basics']
+              }
+            ].map((edu, i) => (
+              <div key={i}>
+                <div className="edu-card">
+                  <div className="edu-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  </div>
+                  <div className="edu-body">
+                    <div className="edu-duration">{edu.duration}</div>
+                    <div className="edu-degree">{edu.degree}</div>
+                    <div className="edu-inst">{edu.inst}</div>
+                    <div className="edu-desc">{edu.desc}</div>
+                    <div className="edu-tags">{edu.tags.map(t => <span key={t} className="edu-tag">{t}</span>)}</div>
+                  </div>
+                </div>
+                {i < 1 && <div className="divider" style={{ marginLeft: '60px' }}></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section id="projects">
+        <div className="container">
+          <p className="section-label">Work</p>
+          <h2 className="section-title">Featured Projects</h2>
+          <p className="section-subtitle" style={{ marginBottom: '3rem' }}>A selection of projects that showcase my skills across the full stack.</p>
+          <div className="projects-grid">
+            {projects.map((p, i) => (
+              <div key={p.title} className="card project-card">
+                <div className="project-num">{String(i + 1).padStart(2, '0')}</div>
+                <div className="project-title">{p.title}</div>
+                <div className="project-desc">{p.description}</div>
+                <div className="project-tech">{p.tech.map(t => <span key={t} className="tech-pill">{t}</span>)}</div>
+                <div className="project-links">
+                  <a href={p.github} target="_blank" rel="noopener noreferrer" className="project-link">GitHub</a>
+                  <a href={p.live} target="_blank" rel="noopener noreferrer" className="project-link">Live Demo</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERIENCE */}
+      <section id="experience">
+        <div className="container">
+          <p className="section-label">Career</p>
+          <h2 className="section-title">Experience</h2>
+          <div className="card exp-card">
+            <div className="exp-header">
+              <div className="exp-role">Senior Software Developer</div>
+              <span className="exp-duration">2025 – Present</span>
+            </div>
+            <div className="exp-company">Nexcore Alliance LLP</div>
+            <div className="exp-desc">Contributing to enterprise-level web applications with a focus on frontend development using React. Collaborating with cross-functional teams, implementing modern UI practices, and actively applying best coding standards in real-world projects.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact">
+        <div className="container">
+          <div className="contact-grid">
+            <div className="contact-info">
+              <p className="section-label">Contact</p>
+              <h2 className="section-title">Let's work<br />together.</h2>
+              <p className="section-subtitle">Have a project in mind? I'd love to hear about it. Send me a message and I'll get back to you as soon as possible.</p>
+              <div style={{ marginTop: '2rem' }}>
+                {[
+                  { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>, label: 'Email', val: 'siddiquiraheem02@gmail.com' },
+                  { icon: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02.005 2.05.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>, label: 'GitHub', val: 'RaheemSiddiqui527' },
+                  { icon: <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 110-4.13 2.07 2.07 0 010 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>, label: 'LinkedIn', val: 'codewithraheem' },
+                ].map(item => (
+                  <div key={item.label} className="contact-item">
+                    <div className="contact-icon">{item.icon}</div>
+                    <div>
+                      <div className="contact-item-label">{item.label}</div>
+                      <div className="contact-item-val">{item.val}</div>
+                    </div>
+                  </div>
                 ))}
               </div>
-
-              {/* Mobile Menu Button */}
-              <button
-                className="md:hidden text-white focus:outline-none"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {isMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
             </div>
-
-            {/* Mobile Navigation */}
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="md:hidden mt-4 pb-4"
-              >
-                <div className="flex flex-col space-y-4">
-                  {['Home', 'About', 'Education', 'Projects', 'Experience', 'Contact'].map((item) => (
-                    <button
-                      key={item}
-                      onClick={() => scrollToSection(item.toLowerCase())}
-                      className={`text-left hover:text-purple-300 transition-colors duration-200 ${
-                        activeSection === item.toLowerCase() ? 'text-purple-300' : 'text-white'
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </div>
-        </nav>
-
-        {/* Hero Section */}
-        <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-pink-600/20"></div>
-          <div className="container mx-auto px-6 text-center relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                 Full Stack Developer
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto">
-                Crafting intelligent and scalable digital experiences using modern web technologies like React, Node.js, and MongoDB — with a passion for clean code, performance, and problem-solving.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => scrollToSection('projects')}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-                >
-                  View My Work
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => scrollToSection('contact')}
-                  className="border-2 border-purple-400 px-8 py-3 rounded-full font-semibold hover:bg-purple-400 hover:text-white transition-all duration-300"
-                >
-                  Get In Touch
-                </motion.button>
-              </div>
-            </motion.div>
-          </div>
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <button 
-              onClick={() => scrollToSection('about')}
-              className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center cursor-pointer hover:border-white/50 transition-colors"
-            >
-              <div className="w-1 h-3 bg-white/30 rounded-full mt-2"></div>
-            </button>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section id="about" className="py-20 bg-black/20">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                About Me
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                Passionate AI/ML-focused Full stack developer with hands-on experience in building scalable web applications.
-                I specialize in the MERN stack (MongoDB, Express.js, React.js, Node.js) and have a strong foundation in Artificial Intelligence and Machine Learning, backed by a diploma in AIML. I enjoy turning complex problems into clean, efficient solutions with a focus on performance, usability, and real-world impact.
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-12 items-center">
-              {/* Profile Photo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8 }}
-                className="flex justify-center md:justify-start"
-              >
-                <div className="relative">
-                  <div className="w-64 h-64 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 p-1">
-                    <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden">
-                      <Image
-                        src="/profile.jpg"
-                        alt="M.A.Raheem Siddiqui - Full Stack Developer"
-                        width={256}
-                        height={256}
-                        className="w-full h-full object-cover rounded-full"
-                        priority
-                        onError={(e) => {
-                          e.target.src = "/profile-placeholder.svg";
-                        }}
-                      />
-                    </div>
+            <div>
+              <div className="form-card">
+                {submitMessage && <div className="success-msg">{submitMessage}</div>}
+                <form onSubmit={handleSubmit}>
+                  <div className="form-row">
+                    <div><label>Name</label><input type="text" name="name" placeholder="Your name" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required /></div>
+                    <div><label>Email</label><input type="email" name="email" placeholder="your@email.com" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required /></div>
                   </div>
-                  {/* Decorative elements */}
-                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-purple-400 rounded-full opacity-60 animate-pulse"></div>
-                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-pink-400 rounded-full opacity-60 animate-pulse delay-1000"></div>
-                </div>
-              </motion.div>
-
-              {/* Skills & Technologies */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-6"
-              >
-                <h3 className="text-2xl font-bold text-purple-300">Skills & Technologies</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {skills.map((skill, index) => (
-                    <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center hover:bg-white/20 transition-all duration-300"
-                    >
-                      {skill}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* What I Do */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className="space-y-6"
-              >
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                  <h3 className="text-2xl font-bold text-purple-300 mb-4">What I Do</h3>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex items-center space-x-3">
-                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                      <span>Frontend Development with React & Next.js</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                      <span>Backend Development with Node.js, Express.js  & Python</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                      <span>Database Design & Management</span>
-                    </li>
-                    <li className="flex items-center space-x-3">
-                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
-                      <span>Cloud Services & DevOps</span>
-                    </li>
-                  </ul>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Social Media Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-16 text-center"
-            >
-              <h3 className="text-3xl font-bold text-purple-300 mb-8">Connect With Me</h3>
-              <div className="flex justify-center space-x-6">
-                {/* GitHub */}
-                <motion.a
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="https://github.com/RaheemSiddiqui527"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <svg className="w-8 h-8 text-purple-400 group-hover:text-purple-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                  </svg>
-                </motion.a>
-
-                {/* LinkedIn */}
-                <motion.a
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="https://linkedin.com/in/codewithraheem"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <svg className="w-8 h-8 text-purple-400 group-hover:text-purple-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                </motion.a>
-
-                {/* Twitter */}
-                <motion.a
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="https://twitter.com/codewithraheem"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <svg className="w-8 h-8 text-purple-400 group-hover:text-purple-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                  </svg>
-                </motion.a>
-
-                {/* Email */}
-                <motion.a
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="mailto:siddiquiraheem02@gmail.com"
-                  className="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <svg className="w-8 h-8 text-purple-400 group-hover:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </motion.a>
-
-               
-                {/* Instagram */}
-                <motion.a
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="https://instagram.com/codewithraheem"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <svg className="w-8 h-8 text-purple-400 group-hover:text-purple-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
-                </motion.a>
-              </div>
-              
-              {/* Social Media Labels */}
-              <div className="flex justify-center space-x-6 mt-4">
-                <span className="text-sm text-gray-400">GitHub</span>
-                <span className="text-sm text-gray-400">LinkedIn</span>
-                <span className="text-sm text-gray-400">Twitter</span>
-                <span className="text-sm text-gray-400">Email</span>
-                <span className="text-sm text-gray-400">Instagram</span>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Education Section */}
-        <section id="education" className="py-20">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Education
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                My educational journey and continuous learning path in technology and development
-              </p>
-            </motion.div>
-
-            <div className="max-w-4xl mx-auto">
-              {education.map((edu, index) => (
-                <motion.div
-                  key={edu.degree}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="mb-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-purple-400/30 transition-all duration-300"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                    <h3 className="text-xl font-bold text-purple-300">{edu.degree}</h3>
-                    <span className="text-pink-300 font-semibold">{edu.duration}</span>
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-200 mb-3">{edu.institution}</h4>
-                  <p className="text-gray-300 mb-4">{edu.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {edu.achievements.map((achievement, achievementIndex) => (
-                      <span
-                        key={achievementIndex}
-                        className="px-3 py-1 bg-purple-500/20 text-purple-200 rounded-full text-sm"
-                      >
-                        {achievement}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects" className="py-20 bg-black/20">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Featured Projects
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                Here are some of my recent projects that showcase my skills and creativity
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden border border-white/20 hover:border-purple-400/50 transition-all duration-300 group"
-                >
-                  <div className="h-48 bg-gradient-to-br from-purple-600/20 to-pink-600/20 relative overflow-hidden">
-                    {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <div className="text-6xl opacity-50">🚀</div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-3 text-purple-300">{project.title}</h3>
-                    <p className="text-gray-300 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-purple-500/20 text-purple-200 rounded-full text-sm"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex space-x-4">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
-                      >
-                        GitHub
-                      </a>
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-pink-400 hover:text-pink-300 transition-colors duration-200"
-                      >
-                        Live Demo
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section id="experience" className="py-20 bg-black/20">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Experience
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                My professional journey and key achievements
-              </p>
-            </motion.div>
-
-            <div className="max-w-4xl mx-auto">
-              {experience.map((exp, index) => (
-                <motion.div
-                  key={exp.role}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="mb-8 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                    <h3 className="text-xl font-bold text-purple-300">{exp.role}</h3>
-                    <span className="text-pink-300 font-semibold">{exp.duration}</span>
-                  </div>
-                  <h4 className="text-lg font-semibold text-gray-200 mb-3">{exp.company}</h4>
-                  <p className="text-gray-300">{exp.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className="py-20">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Get In Touch
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                Ready to start your next project? Let's work together to create something amazing.
-              </p>
-            </motion.div>
-
-            <div className="max-w-2xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20"
-              >
-                {submitMessage && (
-                  <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg text-green-200">
-                    {submitMessage}
-                  </div>
-                )}
-                
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-purple-400 transition-colors duration-200"
-                        placeholder="Your Name"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-purple-400 transition-colors duration-200"
-                        placeholder="your@email.com"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Subject</label>
-                    <input
-                      type="text"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-purple-400 transition-colors duration-200"
-                      placeholder="Project Discussion"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                    <textarea
-                      rows={5}
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:border-purple-400 transition-colors duration-200"
-                      placeholder="Tell me about your project..."
-                      required
-                    ></textarea>
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`w-full px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                      isSubmitting
-                        ? 'bg-gray-600 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-lg hover:shadow-purple-500/25'
-                    }`}
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </motion.button>
+                  <div className="form-group"><label>Subject</label><input type="text" name="subject" placeholder="Project discussion" value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} required /></div>
+                  <div className="form-group"><label>Message</label><textarea name="message" placeholder="Tell me about your project..." value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} required></textarea></div>
+                  <button type="submit" className="submit-btn" disabled={isSubmitting}>{isSubmitting ? 'Opening WhatsApp...' : '💬 Send via WhatsApp'}</button>
                 </form>
-              </motion.div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="bg-black/40 py-8 border-t border-white/10">
-          <div className="container mx-auto px-6 text-center">
-            <p className="text-gray-400">
-              © 2025 M.A.Raheem Siddiqui.  Crafted with Next.js and love for code.
-            </p>
-          </div>
-        </footer>
-      </div>
+      {/* FOOTER */}
+      <footer>
+         © 2026 M.A.Raheem Siddiqui.  Crafted with Next.js and love for code.
+      </footer>
     </>
   )
 }
